@@ -1,4 +1,5 @@
 const mongoose = require('../bin/mongodb');
+const functionHelper = require('../helpers/functionHelper');
 
 const tagsSChema = new mongoose.Schema({
     name:String
@@ -7,7 +8,7 @@ const tagsSChema = new mongoose.Schema({
 const productSchema = new mongoose.Schema({
     name:{
         type:String,
-        required:[true,"El campo nombre es obligatorio"],
+        required:[true,functionHelper.General.campo_obligatorio],
         minlength:1,
         maxlength:10
     },
