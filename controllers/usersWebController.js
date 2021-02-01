@@ -22,7 +22,11 @@ module.exports = {
         try{
             const userWeb = await usersWebModel.findOne({email:req.body.email});
             if (!userWeb){
-                res.json({error:true, message:functionHelper.userWeb.userNoExist});
+                console.log(userWeb,functionHelper);
+                res.json({
+                    error:true, 
+                    message:functionHelper('auth/user-not-found')
+                });
                 return
             }
             if(bcrypt.compareSync(req.body.password, userWeb.password)){
@@ -35,7 +39,7 @@ module.exports = {
             }
             console.log(req.body);
         }catch(e){
-            res.json({message:functionHelper.messageError(e.message)});
+            res.json({message:functionHelper(e.message)});
         }
     }
 }
