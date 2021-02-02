@@ -21,11 +21,10 @@ module.exports = {
     login: async function (req, res, next){
         try{
             const userWeb = await usersWebModel.findOne({email:req.body.email});
-            if (!userWeb){
-                console.log(userWeb,functionHelper);
+            if (!userWeb){                
                 res.json({
                     error:true, 
-                    message:functionHelper('auth/user-not-found')
+                    message:functionHelper.messageError('auth/user-not-found')
                 });
                 return
             }
@@ -36,10 +35,9 @@ module.exports = {
             }else{
                 res.json({error:true, message:functionHelper.userWeb.passwordNoMatch});
                 return
-            }
-            console.log(req.body);
+            }            
         }catch(e){
-            res.json({message:functionHelper(e.message)});
+            res.json({error:true,message:e.message});
         }
     }
 }

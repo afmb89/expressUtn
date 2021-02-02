@@ -32,7 +32,9 @@ app.use('/categories', categoriesRouter);
 function validateUser(req, res, next){
   jwt.verify(req.headers['x-access-token'], req.app.get("secretKey"), function (err, decoded){
     if(err){
-      res.json({error:err.message});
+      if(err.message == 'jwt must be provided'){
+        res.json({error:'No hay Token en el sistema'});
+      }      
     }else{
       console.log(decoded);
       req.body.tokenData = decoded;

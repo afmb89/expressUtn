@@ -8,11 +8,29 @@ module.exports = {
             if(req.query.buscar){
                 queryFInd={name:{$regex:".*"+req.query.buscar+".*",$options:"i"}}
             }
-            const productos = await productsModel.find(queryFInd).populate("category").select("sku price name category");
+            const productos = await productsModel.find(queryFInd).populate("category").select("important sku price name category");
             res.json(productos);
         }catch(e){
             next(e);
         }        
+    },
+    getAllImportant: async function (req, res, next){
+        try{
+            const productos = await productsModel
+            .find({"important":true}, {
+                populate:"category",
+                limit:req.query.limit || 4,
+                page:req.query.page || 1
+            })
+            .populate("category")
+            .select("name price sku description category")
+            ;
+            console.log("productos: ",productos);
+            res.json(productos);
+        }catch(e){
+            console.log("e: ", e);
+            next(e);
+        } 
     },
     getAllPaginate:async function(req, res, next) {
         try{

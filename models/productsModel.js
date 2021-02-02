@@ -31,6 +31,10 @@ const productSchema = new mongoose.Schema({
         type:mongoose.Schema.ObjectId,
         ref:"categories"
     },
+    important:{
+        type:Boolean,
+        default:false
+    },
     tags:[tagsSChema]
 });
 
