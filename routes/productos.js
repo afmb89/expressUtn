@@ -4,6 +4,7 @@ var productosController = require('../controllers/productsController');
 
 /* GET users listing. */
 router.get('/', productosController.getAll);
+router.get('/destacados', productosController.getAllImportant);
 router.get('/paginate', productosController.getAllPaginate);
 router.get('/tags/:id', productosController.getByTags);
 router.get('/:id', productosController.getById);
