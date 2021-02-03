@@ -42,7 +42,7 @@ productSchema.virtual("price_currency").get(function(){
     return "$ "+this.price;
 });
 
-productSchema.set("toJSON",{getters:true,virtuals:true})
+// productSchema.set("toJSON",{getters:true,virtuals:true})
 
 productSchema.plugin(mongoose.mongoosePaginate);
 

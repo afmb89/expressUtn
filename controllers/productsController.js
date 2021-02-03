@@ -4,39 +4,22 @@ const categoriesModel = require("../models/categoriesModel");
 module.exports = {
     getAll:async function(req, res, next) {
         try{
-            let queryFInd={};
-            if(req.query.buscar){
-                queryFInd={name:{$regex:".*"+req.query.buscar+".*",$options:"i"}}
-            }
-            const productos = await productsModel.find(queryFInd).populate("category").select("important sku price name category");
-            res.json(productos);
-        }catch(e){
-            next(e);
-        }        
-    },
-    getAllImportant: async function (req, res, next){
-        try{
             const productos = await productsModel
-            .find({"important":true}, {
-                populate:"category",
-                limit:req.query.limit || 4,
-                page:req.query.page || 1
-            })
-            .populate("category")
-            .select("name price sku description category")
-            ;
+            .find({important:true})
+            .limit(4)
+            .populate("category");
             console.log("productos: ",productos);
             res.json(productos);
         }catch(e){
             console.log("e: ", e);
             next(e);
-        } 
+        }        
     },
     getAllPaginate:async function(req, res, next) {
         try{
             let queryFind={};
             if(req.query.buscar){
-                queryFInd={name:{$regex:".*"+req.query.buscar+".*",$options:"i"}}
+                queryFind={name:{$regex:".*"+req.query.buscar+".*",$options:"i"}}
             }
             const productos = await productsModel.paginate(queryFind, {
                 sort:{name:1},
@@ -48,10 +31,27 @@ module.exports = {
         }catch(e){
             next(e);
         }        
-    },
+    },/*
     getById: async function(req, res, next) {
         try{
-            const productos = await productsModel.findById(req.params.id);
+            const productos = await productsModel.findById(req.params.id, {category:{$exist:true}})
+            .populate("category")
+            .select("name price sku description category.name");
+            res.json(productos);
+        }catch(e){
+            next(e);
+        }        
+    },*/
+    getByName: async function(req, res, next) {
+        try{
+            let queryFind={};
+            if(req.query.buscar){
+                queryFind={name:{$regex:".*"+req.query.buscar+".*",$options:"i"}}
+            }
+            const productos = await productsModel
+            .find(queryFind)
+            .populate("category")
+            .select("name price sku description category.name");
             res.json(productos);
         }catch(e){
             next(e);
