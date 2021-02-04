@@ -18,6 +18,12 @@ const userWebSchema = new mongoose.Schema({
             message:functionHelper.userWeb.userExist
         }
     },
+    telefono:{
+        type:String,
+        required:false,
+        minlength:8,
+        maxlength:10
+    },
     password:{
         type:String,
         required:true,
@@ -40,7 +46,7 @@ userWebSchema.statics.findByIdAndValidate = async function(id){
     if(!docuemnt){
         return{
             error:true,
-            message:"No exite usuario"
+            message:"auth/user-not-found"
         }
     }
 

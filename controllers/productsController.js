@@ -94,6 +94,7 @@ module.exports = {
             const productos = await productsModel.find();
             res.json(productos);
         }catch(e){
+            console.log("e: ", e);
             next(e);
         }
     },

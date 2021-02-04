@@ -13,7 +13,18 @@ module.exports = {
             password: req.body.password
             })
             const document = await userWeb.save();
-            res.json(document);
+            const singinUser = await usersWebModel.findOne({email:req.body.email});
+            if(userWeb){
+                if(bcrypt.compareSync(req.body.password, singinUser.password)){
+                    const token = jwt.sign({userWeb:singinUser._id},req.app.get("secretKey"),{expiresIn:'30m'});
+                    res.json({error:false, message:functionHelper.userWeb.userOK, token:token});
+                    return
+                }else{
+                    res.json({error:true, message:functionHelper.userWeb.passwordNoMatch});
+                    return
+                }
+            }
+            res.json(document, userWeb);
         }catch(e){
             res.json({message:e.message});
         }        
@@ -35,7 +46,7 @@ module.exports = {
             }else{
                 res.json({error:true, message:functionHelper.userWeb.passwordNoMatch});
                 return
-            }            
+            }
         }catch(e){
             res.json({error:true,message:e.message});
         }
